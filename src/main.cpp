@@ -3,9 +3,6 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-// const char* ssid = "wifi";
-// const char* password = "password";
-
 ESP8266WebServer server(80);
 
 const int led = 13;
@@ -47,11 +44,11 @@ void setup(void){
     delay(500);
     // Serial.print(".");
   }
-  Serial.println("");
-  Serial.print("Connected to ");
+  // Serial.println("");
+  // Serial.print("Connected to ");
   // Serial.println(ssid);
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
+  // Serial.print("IP address: ");
+  // Serial.println(WiFi.localIP());
 
   if (MDNS.begin("esp8266")) {
     // Serial.println("MDNS responder started");
