@@ -4,17 +4,21 @@
 #include <ESP8266mDNS.h>
 
 ESP8266WebServer server(80);
-
-const int led = 13;
+// 看你的继电器是连接那个io，默认gpio2
+const int led = 2;
+// const int led = 0;
+// 开关的状态表示
+const int on = 1;
+const int off = 0;
 
 void handleRoot() {
-  digitalWrite(led, 1);
+  digitalWrite(led, on);
   server.send(200, "text/plain", "hello from esp8266!");
-  digitalWrite(led, 0);
+  digitalWrite(led, off);
 }
 
 void handleNotFound(){
-  digitalWrite(led, 1);
+  digitalWrite(led, on);
   String message = "File Not Found\n\n";
   message += "URI: ";
   message += server.uri();
@@ -27,7 +31,7 @@ void handleNotFound(){
     message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
   }
   server.send(404, "text/plain", message);
-  digitalWrite(led, 0);
+  digitalWrite(led, off);
 }
 
 void setup(void){
