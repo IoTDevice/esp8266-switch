@@ -2,8 +2,10 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-
-ESP8266WebServer server(80);
+const int httpPort = 80;
+String deviceName = "";
+String version = "1.0";
+ESP8266WebServer server(httpPort);
 // 看你的继电器是连接那个io，默认gpio0
 const int led1 = 0;
 const int led2 = 0;
@@ -19,7 +21,7 @@ int led2status = off;
 
 // web服务器的根目录
 void handleRoot() {
-  server.send(200, "text/plain", "this is index page from esp8266!");
+  server.send(200, "text/html", "<h1>this is index page from esp8266!</h1>");
 }
 
 void handleLEDStatusChange(){
@@ -46,12 +48,28 @@ void handleLEDStatusChange(){
       }
     }
   }
-  server.send(200, "text/plain", message);
+  server.send(200, "application/json", message);
 }
 
 void handleCurrentLEDStatus(){
   String message;
   message = "{\"led1\":"+String(led1status)+",\"led2\":"+String(led2status)+"}";
+  server.send(200, "application/json", message);
+}
+
+void handleDeviceInfo(){
+  String message;
+  message = "{\n";
+  message += "\"name\":\""+deviceName +"\",\n";
+  message += "\"model\":\"com.iotserv.devices.esp8266-switch\",\n";
+  message += "\"ui-support\":[\"web\",\"native\"],\n";
+  message += "\"ui-first\":\"native\",\n";
+  message += "\"author\":\"Farry\",\n";
+  message += "\"email\":\"newfarry@126.com\",\n";
+  message += "\"home-page\":\"https://github.com/iotdevice\",\n";
+  message += "\"firmware-respository\":\"https://github.com/iotdevice/esp8266-switch\",\n";
+  message += "\"firmware-version\":\""+version+"\"\n";
+  message +="}";
   server.send(200, "application/json", message);
 }
 
@@ -101,11 +119,13 @@ void setup(void){
   server.on("/", handleRoot);
   server.on("/led", handleLEDStatusChange);
   server.on("/status", handleCurrentLEDStatus);
+  // about this device
+  server.on("/info", handleDeviceInfo);
   server.onNotFound(handleNotFound);
 
   server.begin();
   // Serial.println("HTTP server started");
-  MDNS.addService("http", "tcp", 80);
+  MDNS.addService("iotdevice", "tcp", httpPort);
 }
 
 void loop(void){
