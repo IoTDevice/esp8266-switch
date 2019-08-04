@@ -3,7 +3,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 const int httpPort = 80;
-String deviceName = "";
+String deviceName = "esp8266 Switch";
 String version = "1.0";
 ESP8266WebServer server(httpPort);
 // 看你的继电器是连接那个io，默认gpio0
@@ -23,7 +23,7 @@ int led2status = off;
 void handleRoot() {
   server.send(200, "text/html", "<h1>this is index page from esp8266!</h1>");
 }
-
+// 操作LED开关状态的API
 void handleLEDStatusChange(){
   String message = "{\"code\":0,\"message\":\"success\"}";
   for (uint8_t i=0; i<server.args(); i++){
@@ -50,13 +50,13 @@ void handleLEDStatusChange(){
   }
   server.send(200, "application/json", message);
 }
-
+// 当前的LED开关状态API
 void handleCurrentLEDStatus(){
   String message;
   message = "{\"led1\":"+String(led1status)+",\"led2\":"+String(led2status)+"}";
   server.send(200, "application/json", message);
 }
-
+// 设备信息
 void handleDeviceInfo(){
   String message;
   message = "{\n";
@@ -97,8 +97,10 @@ void setup(void){
 
   // Serial.begin(115200);
   WiFi.mode(WIFI_STA);
+  // 选取一种连接路由器的方式 
   // WiFi.begin(ssid, password);
   WiFi.beginSmartConfig();
+
   // Serial.println("");
 
   // Wait for connection
