@@ -50,10 +50,21 @@ void handleLEDStatusChange(){
   }
   server.send(200, "application/json", message);
 }
+// 设备改名的API
+void handleDeviceRename(){
+  String message = "{\"code\":0,\"message\":\"success\"}";
+  for (uint8_t i=0; i<server.args(); i++){
+    if (server.argName(i)=="name")
+    {
+      deviceName = server.arg(i);
+    }
+  }
+  server.send(200, "application/json", message);
+}
 // 当前的LED开关状态API
 void handleCurrentLEDStatus(){
   String message;
-  message = "{\"led1\":"+String(led1status)+",\"led2\":"+String(led2status)+"}";
+  message = "{\"led1\":"+String(led1status)+",\"led2\":"+String(led2status)+"\"code\":0,\"message\":\"success\"}";
   server.send(200, "application/json", message);
 }
 // 设备信息
@@ -120,6 +131,7 @@ void setup(void){
 
   server.on("/", handleRoot);
   server.on("/led", handleLEDStatusChange);
+  server.on("/rename", handleDeviceRename);
   server.on("/status", handleCurrentLEDStatus);
   // about this device
   server.on("/info", handleDeviceInfo);
