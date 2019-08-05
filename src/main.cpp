@@ -64,7 +64,7 @@ void handleDeviceRename(){
 // 当前的LED开关状态API
 void handleCurrentLEDStatus(){
   String message;
-  message = "{\"led1\":"+String(led1status)+",\"led2\":"+String(led2status)+"\"code\":0,\"message\":\"success\"}";
+  message = "{\"led1\":"+String(led1status)+",\"led2\":"+String(led2status)+",\"code\":0,\"message\":\"success\"}";
   server.send(200, "application/json", message);
 }
 // 设备信息
