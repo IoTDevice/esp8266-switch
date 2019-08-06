@@ -8,7 +8,7 @@ String version = "1.0";
 ESP8266WebServer server(httpPort);
 // 看你的继电器是连接那个io，默认gpio0
 const int led1 = 0;
-const int led2 = 0;
+const int led2 = 2;
 // 如果是gpio0
 // const int led = 0;
 // 开关的状态表示
