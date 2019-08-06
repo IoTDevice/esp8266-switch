@@ -8,6 +8,10 @@
 - [x] 1.支持设备开关
 - [x] 2.支持设备重新命名
 
+#### 项目使用的硬件  
+  * esp01-relay  
+  ![image](./images/esp01-relay.png)
+
 #### 界面
   * 主界面
 ![image](./images/main.png)
