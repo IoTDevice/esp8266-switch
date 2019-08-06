@@ -1,6 +1,6 @@
 # esp8266-switch
 开源的esp8266远程开关固件
-> ## control with app(使用一下app操控)：
+> ## control with app(使用以下app操控)：
 > * https://github.com/nat-cloud/android-explorer
 > * 此程序会自动发现设备，将设备放入智能设备列表
 
