@@ -72,7 +72,7 @@ void handleDeviceInfo(){
   String message;
   message = "{\n";
   message += "\"name\":\""+deviceName +"\",\n";
-  message += "\"model\":\"com.iotserv.devices.esp8266-switch\",\n";
+  message += "\"model\":\"com.iotserv.devices.one-key-switch\",\n";
   message += "\"ui-support\":[\"web\",\"native\"],\n";
   message += "\"ui-first\":\"native\",\n";
   message += "\"author\":\"Farry\",\n";
