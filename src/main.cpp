@@ -8,7 +8,7 @@ String version = "1.0";
 ESP8266WebServer server(httpPort);
 // 看你的继电器是连接那个io，默认gpio0
 const int led1 = 0;
-const int led2 = 2;
+const int led2 = 14;
 // 如果是gpio0
 // const int led = 0;
 // 开关的状态表示
@@ -73,6 +73,8 @@ void handleDeviceInfo(){
   message = "{\n";
   message += "\"name\":\""+deviceName +"\",\n";
   message += "\"model\":\"com.iotserv.devices.one-key-switch\",\n";
+  message += "\"mac\":\""+WiFi.macAddress()+"\",\n";
+  message += "\"id\":\""+String(ESP.getFlashChipId())+"\",\n";
   message += "\"ui-support\":[\"web\",\"native\"],\n";
   message += "\"ui-first\":\"native\",\n";
   message += "\"author\":\"Farry\",\n";
@@ -104,7 +106,7 @@ void setup(void){
   pinMode(led1, OUTPUT);
   digitalWrite(led1, off);
   pinMode(led2, OUTPUT);
-  digitalWrite(led2, off);
+  digitalWrite(led2, on);
 
   // Serial.begin(115200);
   WiFi.mode(WIFI_STA);
