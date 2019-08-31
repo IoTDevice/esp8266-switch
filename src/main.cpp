@@ -114,7 +114,7 @@ void setup(void){
   // Serial.print("IP address: ");
   // Serial.println(WiFi.localIP());
 
-  if (MDNS.begin("esp8266")) {
+  if (MDNS.begin("esp-switch-"+String(ESP.getFlashChipId()))) {
     // Serial.println("MDNS responder started");
   }
 
