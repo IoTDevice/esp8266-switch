@@ -8,7 +8,6 @@ String version = "1.0";
 ESP8266WebServer server(httpPort);
 // 看你的继电器是连接那个io，默认gpio0
 const int led1 = 0;
-const int led2 = 14;
 // 如果是gpio0
 // const int led = 0;
 // 开关的状态表示
@@ -16,7 +15,6 @@ const int on = 1;
 const int off = 0;
 // 开关的当前状态
 int led1status = off;
-int led2status = off;
 // digitalWrite(led1, on);
 
 // web服务器的根目录
@@ -37,14 +35,6 @@ void handleLEDStatusChange(){
       {
         digitalWrite(led1, off);
         led1status = off;
-      }else if (server.arg(i)=="ON2")
-      {
-        digitalWrite(led2, on);
-        led2status = on;
-      }else if (server.arg(i)=="OFF2")
-      {
-        digitalWrite(led2, off);
-        led2status = off;
       }
     }
   }
@@ -64,7 +54,7 @@ void handleDeviceRename(){
 // 当前的LED开关状态API
 void handleCurrentLEDStatus(){
   String message;
-  message = "{\"led1\":"+String(led1status)+",\"led2\":"+String(led2status)+",\"code\":0,\"message\":\"success\"}";
+  message = "{\"led1\":"+String(led1status)+",\"code\":0,\"message\":\"success\"}";
   server.send(200, "application/json", message);
 }
 // 设备信息
@@ -103,18 +93,15 @@ void handleNotFound(){
 }
 
 void setup(void){
-  pinMode(led1, OUTPUT);
-  digitalWrite(led1, off);
-  pinMode(led2, OUTPUT);
-  digitalWrite(led2, on);
+//  WiFi.softAP("ESP-Switch");
 
-  // Serial.begin(115200);
-  WiFi.mode(WIFI_STA);
+   WiFi.mode(WIFI_STA);
   // 选取一种连接路由器的方式 
-  // WiFi.begin(ssid, password);
-  WiFi.beginSmartConfig();
+//   WiFi.begin(ssid, password);
+   WiFi.beginSmartConfig();
 
-  // Serial.println("");
+  pinMode(led1, OUTPUT);
+  // digitalWrite(led1, off);
 
   // Wait for connection
   while (WiFi.status() != WL_CONNECTED) {
