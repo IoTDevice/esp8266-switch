@@ -62,7 +62,7 @@ void handleDeviceInfo(){
   message += "\"name\":\""+deviceName +"\",\n";
   message += "\"model\":\"com.iotserv.devices.one-key-switch\",\n";
   message += "\"mac\":\""+WiFi.macAddress()+"\",\n";
-  message += "\"id\":\""+String(ESP.getFlashChipId())+"\",\n";
+  message += "\"id\":\""+WiFi.macAddress()+"\",\n";
   message += "\"ui-support\":[\"web\",\"native\"],\n";
   message += "\"ui-first\":\"native\",\n";
   message += "\"author\":\"Farry\",\n";
@@ -107,7 +107,7 @@ void setup(void){
     // Serial.print(".");
   }
 
-  if (MDNS.begin("esp-switch-"+String(ESP.getFlashChipId()))) {
+  if (MDNS.begin("esp-switch-"+WiFi.macAddress())) {
     // Serial.println("MDNS responder started");
   }
 
