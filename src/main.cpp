@@ -3,7 +3,7 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 const int httpPort = 80;
-String deviceName = "esp8266 Switch";
+String deviceName = "开关";
 String version = "1.0";
 ESP8266WebServer server(httpPort);
 // 看你的继电器是连接那个io，默认gpio0
@@ -55,24 +55,6 @@ void handleCurrentledStatus(){
   message = "{\"led\":\""+ledStatus+"\",\"code\":0,\"message\":\"success\"}";
   server.send(200, "application/json", message);
 }
-// 设备信息
-void handleDeviceInfo(){
-  String message;
-  message = "{\n";
-  message += "\"name\":\""+deviceName +"\",\n";
-  message += "\"model\":\"com.iotserv.devices.one-key-switch\",\n";
-  message += "\"mac\":\""+WiFi.macAddress()+"\",\n";
-  message += "\"id\":\""+WiFi.macAddress()+"\",\n";
-  message += "\"ui-support\":[\"web\",\"native\"],\n";
-  message += "\"ui-first\":\"native\",\n";
-  message += "\"author\":\"Farry\",\n";
-  message += "\"email\":\"newfarry@126.com\",\n";
-  message += "\"home-page\":\"https://github.com/iotdevice\",\n";
-  message += "\"firmware-respository\":\"https://github.com/iotdevice/esp8266-switch\",\n";
-  message += "\"firmware-version\":\""+version+"\"\n";
-  message +="}";
-  server.send(200, "application/json", message);
-}
 
 // 页面或者api没有找到
 void handleNotFound(){
@@ -111,12 +93,23 @@ void setup(void){
     // Serial.println("MDNS responder started");
   }
 
+  MDNS.addService("iotdevice", "tcp", httpPort);
+  MDNS.addServiceTxt("iotdevice", "tcp", "name", deviceName);
+  MDNS.addServiceTxt("iotdevice", "tcp", "model", "com.iotserv.devices.one-key-switch");
+  MDNS.addServiceTxt("iotdevice", "tcp", "mac", WiFi.macAddress());
+  MDNS.addServiceTxt("iotdevice", "tcp", "id", ESP.getSketchMD5());
+  MDNS.addServiceTxt("iotdevice", "tcp", "ui-support", "web,native");
+  MDNS.addServiceTxt("iotdevice", "tcp", "ui-first", "native");
+  MDNS.addServiceTxt("iotdevice", "tcp", "author", "Farry");
+  MDNS.addServiceTxt("iotdevice", "tcp", "email", "newfarry@126.com");
+  MDNS.addServiceTxt("iotdevice", "tcp", "home-page", "https://github.com/iotdevice");
+  MDNS.addServiceTxt("iotdevice", "tcp", "firmware-respository", "https://github.com/iotdevice/esp8266-switch");
+  MDNS.addServiceTxt("iotdevice", "tcp", "firmware-version", version);
+
   server.on("/", handleRoot);
   server.on("/led", handleLedStatusChange);
   server.on("/rename", handleDeviceRename);
   server.on("/status", handleCurrentledStatus);
-  // about this device
-  server.on("/info", handleDeviceInfo);
   server.onNotFound(handleNotFound);
 
   server.begin();
